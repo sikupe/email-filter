@@ -2,6 +2,8 @@ import {ImapClient} from './imap-client';
 import {ImapSimpleOptions} from 'imap-simple';
 import {handlerLoop} from './handler-loop';
 import {ConfigParser} from './rules/config-parser';
+import {parseArgs} from 'util';
+import {DryRunImapClient} from './dry-run-imap-client';
 
 async function main() {
   const config: ImapSimpleOptions = {
@@ -14,9 +16,35 @@ async function main() {
       authTimeout: 5000,
     },
   };
-  const client = await ImapClient.create(config);
+
+  const {
+    values: {unread, dry, cron},
+  } = parseArgs({
+    options: {
+      unread: {
+        type: 'boolean',
+        short: 'u',
+      },
+      dry: {
+        type: 'boolean',
+        short: 'd',
+      },
+      cron: {
+        type: 'boolean',
+        short: 'd',
+      },
+    },
+  });
+
+  let client: ImapClient;
+  if (dry) {
+    client = await DryRunImapClient.create(config);
+  } else {
+    client = await ImapClient.create(config);
+  }
   const rules = new ConfigParser().loadRules();
-  await handlerLoop(client, rules);
+  await handlerLoop(client, rules, !!unread, !!cron);
+  client.close();
 }
 
 main();

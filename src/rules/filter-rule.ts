@@ -23,12 +23,15 @@ export class FilterRule {
       const pattern = new RegExp(filterConfig.regex);
       if (filterConfig.field === 'to' || filterConfig.field === 'cc') {
         return message[filterConfig.field]
-          .map(field => pattern.test(field))
+          .map(value => this.testPattern(value, pattern))
           .reduce(
             (previousValue, currentValue) => previousValue || currentValue
           );
       } else {
-        return pattern.test(message[filterConfig.field].toString());
+        return this.testPattern(
+          message[filterConfig.field]?.toString(),
+          pattern
+        );
       }
     } else if (filterConfig.type === 'datematcher') {
       const context = createContext({
@@ -45,5 +48,13 @@ export class FilterRule {
     } else {
       throw new Error(`Unknown rule: ${JSON.stringify(filterConfig)}`);
     }
+  }
+
+  private testPattern(value: string | undefined, pattern: RegExp): boolean {
+    if (!value) {
+      return false;
+    }
+
+    return pattern.test(value);
   }
 }

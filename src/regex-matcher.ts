@@ -1,5 +1,3 @@
-import vm from 'vm';
-
 export function matchAll(regex: RegExp, str: string): RegExpExecArray[] {
   const res: RegExpExecArray[] = [];
   let startIndex = 0;
