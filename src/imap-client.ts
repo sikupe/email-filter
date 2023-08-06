@@ -14,7 +14,10 @@ export class ImapClient {
 
   async move(emailMetadata: EmailMetadata, destination: string) {
     await this.client.openBox(emailMetadata.mailbox);
-    //await this.client.moveMessage(, destination);
+    await this.client.moveMessage(
+      emailMetadata.messageId.toString(),
+      destination
+    );
   }
 
   async fetchUnreadMails(): Promise<EmailMetadata[]> {

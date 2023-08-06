@@ -1,8 +1,9 @@
 import {ImapClient} from './imap-client';
 import {ImapSimpleOptions} from 'imap-simple';
+import {handlerLoop} from './handler-loop';
+import {ConfigParser} from './rules/config-parser';
 
 async function main() {
-  console.log('test 3');
   const config: ImapSimpleOptions = {
     imap: {
       host: process.env.EMAIL_HOST!,
@@ -14,9 +15,8 @@ async function main() {
     },
   };
   const client = await ImapClient.create(config);
-  const unreadMails = await client.fetchUnreadMails();
-  const readMails = await client.fetchReadMails();
-  console.log(unreadMails);
+  const rules = new ConfigParser().loadRules();
+  await handlerLoop(client, rules);
 }
 
 main();
