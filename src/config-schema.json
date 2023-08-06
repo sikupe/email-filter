@@ -1,0 +1,166 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "ActionConfig": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/MoveActionConfig"
+                },
+                {
+                    "$ref": "#/definitions/MarkAsReadActionConfig"
+                }
+            ]
+        },
+        "AndFilterConfig": {
+            "properties": {
+                "filters": {
+                    "items": {
+                        "$ref": "#/definitions/FilterConfig"
+                    },
+                    "type": "array"
+                },
+                "type": {
+                    "const": "and",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "DateMatcher": {
+            "properties": {
+                "comparator": {
+                    "enum": [
+                        "<",
+                        "=<",
+                        "===",
+                        ">",
+                        ">="
+                    ],
+                    "type": "string"
+                },
+                "date": {
+                    "type": "number"
+                },
+                "type": {
+                    "const": "datematcher",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "FilterConfig": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/AndFilterConfig"
+                },
+                {
+                    "$ref": "#/definitions/OrFilterConfig"
+                },
+                {
+                    "$ref": "#/definitions/NotFilterConfig"
+                },
+                {
+                    "$ref": "#/definitions/MatcherFilterConfig"
+                },
+                {
+                    "$ref": "#/definitions/DateMatcher"
+                }
+            ]
+        },
+        "MarkAsReadActionConfig": {
+            "properties": {
+                "type": {
+                    "const": "mark-as-read",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "MatcherFilterConfig": {
+            "properties": {
+                "field": {
+                    "enum": [
+                        "cc",
+                        "date",
+                        "from",
+                        "mailbox",
+                        "subject",
+                        "to"
+                    ],
+                    "type": "string"
+                },
+                "regex": {
+                    "type": "string"
+                },
+                "type": {
+                    "const": "matcher",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "MoveActionConfig": {
+            "properties": {
+                "destination": {
+                    "type": "string"
+                },
+                "type": {
+                    "const": "move",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "NotFilterConfig": {
+            "properties": {
+                "filter": {
+                    "$ref": "#/definitions/FilterConfig"
+                },
+                "type": {
+                    "const": "not",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "OrFilterConfig": {
+            "properties": {
+                "filters": {
+                    "items": {
+                        "$ref": "#/definitions/FilterConfig"
+                    },
+                    "type": "array"
+                },
+                "type": {
+                    "const": "or",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "RuleConfig": {
+            "properties": {
+                "actions": {
+                    "items": {
+                        "$ref": "#/definitions/ActionConfig"
+                    },
+                    "type": "array"
+                },
+                "filter": {
+                    "$ref": "#/definitions/FilterConfig"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "rules": {
+            "items": {
+                "$ref": "#/definitions/RuleConfig"
+            },
+            "type": "array"
+        }
+    },
+    "type": "object"
+}
+
