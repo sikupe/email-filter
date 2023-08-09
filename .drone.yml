@@ -21,7 +21,7 @@ steps:
         path: /var/run/docker.sock
     settings:
       registry: registry.simon-petrik.de
-      repo: registry.simon-petrik.de/email-filter:latest
+      repo: email-filter:latest
       username:
         from_secret: docker_username
       password:
