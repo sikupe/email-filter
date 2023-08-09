@@ -11,7 +11,7 @@
     "generate-schema": "typescript-json-schema tsconfig.json Config > res/config-schema.json"
   },
   "dependencies": {
-    "imap-simple": "^1.6.3",
+    "imap-simple": "^5.1.0",
     "jsonschema": "^1.4.1"
   },
   "devDependencies": {
