@@ -10,9 +10,15 @@ steps:
       DOCKER_BUILDKIT: 1
     commands:
       - docker build -t email-filter:latest .
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
 
   - name: push
     image: plugins/docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
     settings:
       repo: registry.simon-petrik.de/email-filter:latest
       username:
@@ -20,3 +26,8 @@ steps:
       password:
         from_secret: docker_password
       tags: latest
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
