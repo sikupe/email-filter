@@ -1,7 +1,6 @@
 import {ImapClient} from './imap-client';
 import {ImapSimpleOptions} from 'imap-simple';
 import {handlerLoop} from './handler-loop';
-import {ConfigParser} from './rules/config-parser';
 import {parseArgs} from 'util';
 import {DryRunImapClient} from './dry-run-imap-client';
 
@@ -42,8 +41,7 @@ async function main() {
   } else {
     client = await ImapClient.create(config);
   }
-  const rules = new ConfigParser().loadRules();
-  await handlerLoop(client, rules, !!unread, !!cron);
+  await handlerLoop(client, !!unread, !!cron);
   client.close();
 }
 

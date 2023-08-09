@@ -1,11 +1,10 @@
 import {sleep} from './sleep';
 import {ImapClient} from './imap-client';
-import {Rule} from './rules/rule';
 import {EmailMetadata, formatEmailMetadata} from './email-metadata';
+import {ConfigParser} from './rules/config-parser';
 
 export async function handlerLoop(
   imapClient: ImapClient,
-  rules: Rule[],
   unreadMails: boolean,
   cron: boolean
 ) {
@@ -16,6 +15,8 @@ export async function handlerLoop(
     } else {
       mails = await imapClient.fetchReadMails();
     }
+
+    const rules = new ConfigParser().loadRules();
 
     for (const mail of mails) {
       for (const rule of rules) {

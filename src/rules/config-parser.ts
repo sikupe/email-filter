@@ -21,7 +21,7 @@ export class ConfigParser {
   load(): Config {
     const config = JSON.parse(readFileSync('res/config.json').toString());
     const validationSchema = JSON.parse(
-      readFileSync('src/config-schema.json').toString()
+      readFileSync('res/config-schema.json').toString()
     );
     const validator = new Validator();
     validator.validate(config, validationSchema);
