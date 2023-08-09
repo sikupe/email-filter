@@ -31,6 +31,7 @@ export interface MatcherFilterConfig {
   type: 'matcher';
   field: keyof Omit<EmailMetadata, 'messageId'>;
   regex: string;
+  regexFlags?: string;
 }
 
 export interface DateMatcher {

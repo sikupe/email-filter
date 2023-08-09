@@ -20,7 +20,7 @@ export class FilterRule {
         .map(rule => this.isApplicable(message, rule))
         .reduce((previousValue, currentValue) => previousValue || currentValue);
     } else if (filterConfig.type === 'matcher') {
-      const pattern = new RegExp(filterConfig.regex);
+      const pattern = new RegExp(filterConfig.regex, filterConfig.regexFlags);
       if (filterConfig.field === 'to' || filterConfig.field === 'cc') {
         return message[filterConfig.field]
           .map(value => this.testPattern(value, pattern))

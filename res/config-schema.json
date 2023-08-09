@@ -92,6 +92,9 @@
                 "regex": {
                     "type": "string"
                 },
+                "regexFlags": {
+                    "type": "string"
+                },
                 "type": {
                     "const": "matcher",
                     "type": "string"
